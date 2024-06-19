@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Video-Mapper">
+
+  <select id="selectSearchVideoList" resultType="video">
+    SELECT 
+      V.vno, V.v_title, V.pathupload, V.filetype, V.regdate, V.dno, C.d_label
+    FROM
+      VIDEO V
+      INNER JOIN FARM_CONTROL C ON V.dno = C.dno
+    <where>
+      <if test="searchType == 'title'">
+        V.v_title LIKE '%'||#{keyword}||'%'
+      </if>
+      <if test="searchType == 'label'">
+        C.d_label LIKE '%'||#{keyword}||'%' 
+      </if>
+    </where>
+    ORDER BY V.vno DESC
+  </select>
+
+  <select id="selectSearchVideoListCount" resultType="int">
+    SELECT
+      COUNT(*)
+    FROM 
+      VIDEO V
+      INNER JOIN FARM_CONTROL C ON V.dno = C.dno
+    <where>
+      <if test="searchType == 'title'">
+        V.v_title LIKE '%'||#{keyword}||'%'
+      </if>
+      <if test="searchType == 'label'">
+        C.d_label LIKE '%'||#{keyword}||'%'
+      </if>
+    </where>
+  </select>
+
+  <select id="selectVideoList" resultMap="videoMap">
+    SELECT
+        v.*,
+        c.d_label
+    FROM
+        video v
+        LEFT JOIN farm_control c ON v.dno = c.dno
+    ORDER BY
+        v.vno DESC
+  </select>
+
+  <select id="selectVideoByVno" parameterType="int" resultMap="videoMap">
+     SELECT
+        v.*,
+        c.d_label
+    FROM
+        video v
+        LEFT JOIN farm_control c ON v.dno = c.dno
+    WHERE
+        v.vno = #{vno}
+	</select>
+
+<resultMap id="videoMap" type="video">
+    <result property="vno" column="vno" />
+    <result property="v_title" column="v_title" />
+    <result property="regDate" column="regDate" />
+    <result property="dno" column="dno" />
+    <result property="d_label" column="d_label" />
+</resultMap>
+
+  <delete id="deleteVideo" parameterType="int">
+    DELETE FROM VIDEO
+    WHERE vno = #{vno}
+  </delete>
+
+</mapper>

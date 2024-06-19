@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="VideoSavedFilePath" class="java.lang.String">
+        <constructor-arg value="${savedPath.video}" />
+    </bean>
+
+    <bean id="controlDAO"
+          class="com.spring.dao.ControlDAOImpl"
+          p:sqlSession-ref="sqlSession"
+    />
+
+    <bean id="videoDAO"
+          class="com.spring.dao.VideoDAOImpl"
+          p:sqlSession-ref="sqlSession"
+    />
+
+    <bean id="controlService"
+          class="com.spring.service.ControlServiceImpl"
+          p:controlDAO-ref="controlDAO"
+    />
+
+    <bean id="videoService"
+          class="com.spring.service.VideoServiceImpl"
+          p:videoDAO-ref="videoDAO"
+    />
+
+</beans>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Control-Mapper">
+
+ 	<select id="selectControlList" resultType="control">
+        SELECT *
+        FROM farm_control
+        ORDER BY dno DESC
+    </select>
+
+    <select id="selectControlByDno" parameterType="int" resultType="control">
+        SELECT *
+        FROM farm_control
+        WHERE dno = #{dno}
+    </select>
+
+    <delete id="deleteControl" parameterType="int">
+        DELETE
+        FROM farm_control
+        WHERE dno = #{dno}
+    </delete>
+    
+    <delete id="deleteAllControl">
+        DELETE FROM farm_control
+    </delete>
+
+</mapper>	
+		
